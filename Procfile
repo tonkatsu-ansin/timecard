@@ -1,0 +1,1 @@
+timecard: python bot.py 
