@@ -1,11 +1,11 @@
-import settings
 import discord
 from datetime import datetime,timedelta,timezone
+from os import getenv
 
 client = discord.Client()
 
 def get_destination():
-    Channel = client.get_channel(int(settings.CHANNEL_ID))
+    Channel = client.get_channel(int(getenv('CHANNEL_ID')))
     return Channel
 
 @client.event
@@ -27,4 +27,4 @@ async def on_voice_state_update(Member,before,after):
         elif(after.channel != before.channel):
             await destination.send(date + Member.name + " moved to " + str(after.channel) + " from " + str(before.channel))
 
-client.run(settings.BOT_TOKEN);
+client.run(getenv('BOT_TOKEN'));
