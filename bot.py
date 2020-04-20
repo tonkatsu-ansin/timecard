@@ -11,8 +11,7 @@ def get_destination():
 
 @bot.event
 async def on_ready():
-    destination = get_destination()
-    await destination.send("Timecard is ready!")
+    pass
 
 @bot.event
 async def on_voice_state_update(Member,before,after):
