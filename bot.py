@@ -1,9 +1,11 @@
 import discord
 from discord.ext import commands
+from discord.utils import escape_markdown
 from datetime import datetime,timedelta,timezone
 from os import getenv
 
-bot = commands.Bot(command_prefix='$')
+intents = discord.Intents.default()
+bot = commands.Bot(intents=intents,command_prefix='\\')
 
 def get_destination():
     Channel = bot.get_channel(int(getenv('CHANNEL_ID')))
@@ -11,7 +13,7 @@ def get_destination():
 
 @bot.event
 async def on_ready():
-    pass
+    print('bot is ready')
 
 @bot.event
 async def on_voice_state_update(Member,before,after):
@@ -19,21 +21,11 @@ async def on_voice_state_update(Member,before,after):
         destination = get_destination()
         now = datetime.now(timezone(timedelta(hours=9)))
         date = str(now.strftime("%Y/%m/%d %H:%M:%S")+" ")
-
         if(before.channel is None): 
-            await destination.send(date + Member.name + " joined to " + str(after.channel))
+            await destination.send(escape_markdown(f'{date} {Member.name} joined to {str(after.channel)}'))
         elif(after.channel is None):
-            await destination.send(date + Member.name + " left " + str(before.channel))
+            await destination.send(escape_markdown(f'{date} {Member.name} left {str(before.channel)}'))
         elif(after.channel != before.channel):
-            await destination.send(date + Member.name + " moved to " + str(after.channel) + " from " + str(before.channel))
-
-@bot.event
-async def on_command_error(ctx,error):
-    pass #botのpingのクールダウン中にカスタムステータスに設定したい
-
-@bot.command()
-@commands.cooldown(1,180,commands.BucketType.channel)
-async def ping(ctx):
-    await ctx.send("pong")
+            await destination.send(escape_markdown(f'{date} {Member.name} moved to {str(after.channel)} from {str(before.channel)}'))
 
 bot.run(getenv('BOT_TOKEN'))
