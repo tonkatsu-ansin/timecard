@@ -1,4 +1,5 @@
 .env
+.envrc
 .gcloudignore
 app.yaml
 .vscode/settings.json
