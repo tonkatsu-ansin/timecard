@@ -21,11 +21,11 @@ async def on_voice_state_update(Member,before,after):
         date = str(now.strftime("%Y/%m/%d %H:%M:%S")+" ")
 
         if(before.channel is None): 
-            await destination.send(date + Member.name + " joined to " + str(after.channel))
+            await destination.send(f'{date} \{Member.name} joined to {str(after.channel)}')
         elif(after.channel is None):
-            await destination.send(date + Member.name + " left " + str(before.channel))
+            await destination.send(f'{date} \{Member.name} left {str(after.channel)}')
         elif(after.channel != before.channel):
-            await destination.send(date + Member.name + " moved to " + str(after.channel) + " from " + str(before.channel))
+            await destination.send(f'{date} \{Member.name} moved to {str(after.channel)} from {str(before.channel)}')
 
 @bot.event
 async def on_command_error(ctx,error):
